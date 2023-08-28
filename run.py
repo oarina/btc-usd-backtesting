@@ -1,5 +1,6 @@
 import gspread # imports intire gspread library
 from google.oauth2.service_account import Credentials # imports credentials class
+from alpaca.data.historical import CryptoHistoricalDataClient 
 
 # constant var that tells computer what we are going to access
 SCOPE = [
