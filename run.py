@@ -48,5 +48,26 @@ bars["BTC/USD"]
 print(bars)
 
 # historical_datahe workseet of the test columns and a row. https://docs.gspread.org/en/latest/user-guide.html#clear-a-worksheet 
-worksheet.clear() 
+#worksheet.clear() 
+ # so the command worked and it did delete the test data, but in the terminal it says:NameError: name 'worksheet' is not defined
 print(data)
+
+# now testing out inserting few datapoints into the spreadsheet by taking empty list and assigning it values
+data_to_insert = []
+for data_point in bars["BTC/USD"]:
+    # got an error TypeError(f'Object of type {o.__class__.__name__} '
+    # TypeError: Object of type datetime is not JSON serializable
+    # eed to convert the datetime object to a string format before inserting it into the Google Sheet
+       timestamp_str = data_point.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+    row = [
+        timestamp_str,  # Access timestamp directly
+        data_point.open,       # Access open price directly
+        data_point.close      # Access close price directly
+    ]
+    data_to_insert.append(row)
+
+# Insert the data into the worksheet
+historical_data.insert_rows(data_to_insert, value_input_option='RAW')
+
+# Need further investigation into: https://github.com/alpacahq/alpaca-trade-api-python 
+# and https://alpaca.markets/docs/python-sdk/api_reference/data/models.html 
