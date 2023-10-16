@@ -46,3 +46,7 @@ bars = client.get_crypto_bars(request_params)
 # even for a single symbol request - models are agnostic to number of symbols
 bars["BTC/USD"]
 print(bars)
+
+# historical_datahe workseet of the test columns and a row. https://docs.gspread.org/en/latest/user-guide.html#clear-a-worksheet 
+worksheet.clear() 
+print(data)
