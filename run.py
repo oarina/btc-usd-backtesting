@@ -1,4 +1,4 @@
-import gspread # imports intire gspread library
+import gspread # imports entire gspread library
 from google.oauth2.service_account import Credentials # imports credentials class
 from alpaca.data.historical import CryptoHistoricalDataClient 
 
@@ -20,3 +20,4 @@ historical_data = SHEET.worksheet('historical_data')
 data = historical_data.get_all_values()
 
 print(data) #just worked! =) 
+# Writing this for a commit test
