@@ -29,7 +29,7 @@ print(data)  # just worked! =)
 # Testing the Alpaca hsitorical data client
 
 # --1 USING THE CLIENT
-crypto_client = CryptoHistoricalDataClient()
+#crypto_client = CryptoHistoricalDataClient()
 
 client = CryptoHistoricalDataClient()
 
@@ -73,3 +73,21 @@ historical_data.insert_rows(data_to_insert, value_input_option='RAW')
 # Need further investigation into: https://github.com/alpacahq/alpaca-trade-api-python 
 # and https://alpaca.markets/docs/python-sdk/api_reference/data/models.html 
 '''
+
+# Extract the relevant data from Alpaca list of lists
+data_to_insert = []
+for data_point in bars["BTC/USD"]:
+  
+    timestamp_str = data_point.timestamp.strftime('%Y-%m-%d %H:%M:%S')  #formatting the timestamp https://stackoverflow.com/questions/41862525/valueerror-time-data-does-not-match-format-y-m-d-hms-f 
+    low_value = data_point.low
+    high_value = data_point.high
+
+    row = [timestamp_str, low_value, high_value]
+    data_to_insert.append(row)
+
+# Heading for the first row
+headers = ["Timestamp", "Low", "High"]
+historical_data.insert_row(headers, index=1, value_input_option='RAW')
+
+# Insert the data into the worksheet starting from row 2
+historical_data.insert_rows(data_to_insert, row=2, value_input_option='RAW')
