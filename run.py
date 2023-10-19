@@ -19,7 +19,9 @@ SHEET = GSPREAD_CLIENT.open('btc_usd_backtesting')
 # setting up to read the tab in the sheet
 historical_data = SHEET.worksheet('historical_data')
 data = historical_data.get_all_values()
+
 # ------------------------------------------------- Testing the Alpaca hsitorical data client
+
 
 # --1 USING THE CLIENT
 #crypto_client = CryptoHistoricalDataClient()
@@ -29,8 +31,8 @@ client = CryptoHistoricalDataClient()
 request_params = CryptoBarsRequest(
     symbol_or_symbols=["BTC/USD"],
     timeframe=TimeFrame(15, TimeFrameUnit.Minute), 
-    start=datetime(2014, 1, 1),
-    end=datetime(2014, 1, 2)
+    start=datetime(2021, 1, 1),
+    end=datetime(2023, 10, 19)
 )
 
 bars = client.get_crypto_bars(request_params)
@@ -38,8 +40,9 @@ bars = client.get_crypto_bars(request_params)
 bars["BTC/USD"]
 print(bars) # prints what's in the client call
 #print(data)  # prints whats in the google sheet
+
 # ------------------------------------------------ TESTING WRITING ONTO GSHEET
-'''
+
 # historical_datahe workseet of the test columns and a row. https://docs.gspread.org/en/latest/user-guide.html#clear-a-worksheet
 # worksheet.clear()
 # so the command worked and it did delete the test data, but in the terminal it says:NameError: name 'worksheet' is not defined
@@ -62,4 +65,4 @@ historical_data.insert_row(headers, index=1, value_input_option='RAW')
 
 # Insert the data into the worksheet starting from row 2
 historical_data.insert_rows(data_to_insert, row=2, value_input_option='RAW')
-'''
+
