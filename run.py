@@ -7,20 +7,21 @@ from google.oauth2.service_account import Credentials
 
 from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
-from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
+
+
 from datetime import datetime
 
-from alpaca_trade_api.rest import REST, TimeFrame
+from alpaca_trade_api.rest import REST
 import alpaca_trade_api as tradeapi
+import traceback
 
 # --------- Alpaca setup
 
 def load_alpaca_credentials(filename="cred2.json"):
-    """Load Alpaca API credentials from a json file"""
-    
+    """Load Alpaca API credentials from a json file"""  
     with open('creds2.json', 'r') as file:
         creds2 = json.load(file)
-       #  print(creds2) test - successfully linked to my account
+        # print(creds2) 
         api_key = creds2['ALPACA_API_KEY']
         api_secret = creds2['ALPACA_API_SECRET']
     return api_key, api_secret
@@ -29,17 +30,8 @@ def load_alpaca_credentials(filename="cred2.json"):
 API_KEY, API_SECRET = load_alpaca_credentials() 
 alpaca =  tradeapi.REST(API_KEY, API_SECRET, base_url='https://paper-api.alpaca.markets')
 account = alpaca.get_account()
-# print(account) - checking if account is linked
+# print(account) 
 
-"""
-with open('cred2.json') as f:
-    cred2 = json.load(f)
-    api_key = cred2['ALPACA_API_KEY']
-    api_secret = cred2['ALPACA_API_SECRET']
-
-alpaca = tradeapi.REST(api_key, api_secret)
-api = REST()
-"""
 
 # --------- Gspread setup
 
@@ -60,40 +52,61 @@ data = historical_data.get_all_values()
 
 # ------------------------------------------------- Testing the Alpaca hsitorical data client
 
-#bars = alpaca.get_bars("BTC/USD", tradeapi.TimeFrame.Hour, "2021-06-07", "2021-06-08", adjustment='raw').df
-#print(bars)
+client = CryptoHistoricalDataClient()
+request_params = CryptoBarsRequest(
+                        symbol_or_symbols=["BTC/USD"],
+                        timeframe=TimeFrame.Day,
+                        start="2022-09-01",
+                        end="2022-09-02"
+                        )
+btc_bars = client.get_crypto_bars(request_params)
+btc_bars.df
+print(btc_bars)
 
-'''
 
 
 # --1 USING THE CLIENT
 #crypto_client = CryptoHistoricalDataClient()
-try:
-    client = CryptoHistoricalDataClient()
+# Reference: https://alpaca.markets/docs/market-data/getting-started/ 
 
+
+
+'''
+-------------------
+try:
+    client = CryptoHistoricalDataClient()  
     request_params = CryptoBarsRequest(
-        symbol_or_symbols=["BTC/USD"],
-        timeframe=TimeFrame(15, TimeFrameUnit.Minute),
-        start=datetime(2021, 1, 1),
-        end=datetime(2021, 1, 2) 
-        # data needs to fill till 6pm on the 1st, but below will be a rule to break fill afte that
-        #  end=datetime(2021, 1, 2) 
-    )
+                        symbol_or_symbols=["BTC/USD"],
+                        timeframe=TimeFrame.Day,
+                        start="2022-09-01",
+                        end="202-09-02"
+                        )
+
 
     bars = client.get_crypto_bars(request_params)
     print(bars) 
     # prints what's in the client call
     # print(data)  prints whats in the google sheet
 except Exception as e:
+    print(e)
+    print(traceback.format_exc()) 
     print(f"An error occurred during Alpaca client call for data")
     exit()
-
-
+----------------------
 
   timeframe=TimeFrame(15, TimeFrameUnit.Minute),
         start=datetime(2021, 1, 1),
         end=datetime(2021, 1, 2) 
         so I am not able to get any lower than 2021 for minutes. I will try daily
+
+
+    request_params = CryptoBarsRequest(
+        symbol_or_symbols=["BTC/USD"],
+        timeframe=TimeFrame(15, TimeFrameUnit.Minute),
+        start=datetime(2020, 1, 1, 0, 0, 0),
+        end=datetime(2020, 1, 1, 6, 0, 0)
+    )
+
 '''
 
 # ------------------------------------------------ TESTING WRITING ONTO GSHEET
