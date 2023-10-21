@@ -7,10 +7,8 @@ from google.oauth2.service_account import Credentials
 
 from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
-
-
+from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 from datetime import datetime
-
 from alpaca_trade_api.rest import REST
 import alpaca_trade_api as tradeapi
 import traceback
@@ -54,11 +52,11 @@ data = historical_data.get_all_values()
 
 client = CryptoHistoricalDataClient()
 request_params = CryptoBarsRequest(
-                        symbol_or_symbols=["BTC/USD"],
-                        timeframe=TimeFrame.Day,
-                        start="2022-09-01",
-                        end="2022-09-02"
-                        )
+        symbol_or_symbols=["BTC/USD"],
+        timeframe=TimeFrame(15, TimeFrameUnit.Minute),
+        start=datetime(2021, 1, 1),
+        end=datetime(2023, 10, 19)
+        )
 btc_bars = client.get_crypto_bars(request_params)
 btc_bars.df
 print(btc_bars)
