@@ -15,9 +15,9 @@ def display_trade_entry_example():
 def get_trade_details():
     """2. Prompts the user to enter trade details with provided entry examples"""
 
-    start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00): ")
-    end_date_time = input("Enter End Date & Time (e.g., 2021-01-02 06:00:00): ")
-    fee_percentage = input("Enter Fee Percentage (e.g., 0.5): ")
+    start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00): \n")
+    end_date_time = input("Enter End Date & Time (e.g., 2021-01-02 06:00:00): \n")
+    fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n")
 
     return start_date_time, end_date_time, float(fee_percentage)
 
@@ -29,7 +29,7 @@ def display_go_again_ask_message():
 
     print("Would you like to backtest another trade?")
     print("===============================================")
-    choice = input("Enter 1 to backtest again or 2 to exit: ")
+    choice = input("Enter 1 to backtest again or 2 to exit: \n")
     
     if choice == "1":
         get_trade_details()
@@ -55,7 +55,7 @@ def display_start_welcome_message():
     print("Welcome to the BTC/USD Trade Backtesting tool!")
     print("===============================================")
     print("Please choose from one of the following options:")
-    choice = input("Enter 1 to backtest or 2 to exit: ")
+    choice = input("Enter 1 to backtest or 2 to exit: \n")
 
     if choice == "1":
         get_trade_details()
