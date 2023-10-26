@@ -33,6 +33,7 @@ data = historical_data.get_all_values()
 # ------------------------------------------------- Alpaca hsitorical data client
 # Reference: https://alpaca.markets/docs/market-data/getting-started/ 
 
+
 client = CryptoHistoricalDataClient()
 request_params = CryptoBarsRequest(
         symbol_or_symbols=["BTC/USD"],
@@ -42,6 +43,7 @@ request_params = CryptoBarsRequest(
         )
 btc_bars = client.get_crypto_bars(request_params)
 btc_bars.df
+
 print(btc_bars)
 
 # ------------------------------------------------  WRITING ONTO GSHEET
