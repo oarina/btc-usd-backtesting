@@ -77,22 +77,35 @@ insert_into_last_empty_row = len(historical_data.col_values(1))  # counts throug
 
 historical_data.insert_rows(data_to_insert, row=insert_into_last_empty_row, value_input_option='RAW')
 """
+# ---------------CLI
+
+
+def get_trade_details():
+
+    print("Please enter the trade in the following format YYYY-MM-DD HH:MM:SS\n")
+
+    start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    while not validate_start_time(start_date_time):
+        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+        start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
+    
+    while not validate_end_time(end_date_time):
+        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+        end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
+
+    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n")
+    # trade_amount = input("Enter Trade Amount in USD")
+
+    return start_date_time, end_date_time  # Return both start_date_time and end_date_time
+
+
 
 # --------------------------------------------------------------------------------------------------- LOGIC
 
-def validate_date_time(start_date_time):
-    """Validate user datetime format and float input"""
-    # from cli import get_trade_details # trying to avoid circular passing from one function to another
-    
-    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
-    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
-
-    if re.match(pattern, start_date_time):
-        start_date_time = validated_start_date_time = start_date_time # converting input into a diff. var for next funct
-        return True, validated_start_date_time
-    return False, None
-
-def retrieve_input_price(validated_start_date_time): # using start date time for now only
+def retrieve_input_price(validated_start_date_time, validated_end_date_time): # using start date time for now only
     '''Retrieve low and high prices from user chosen dates and times'''
     #from logic import retrieve_input_price # need to introduce module so that it recognises start_date_time
 
@@ -100,31 +113,61 @@ def retrieve_input_price(validated_start_date_time): # using start date time for
         cell_value = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S")
         
         if cell_value == validated_start_date_time: 
-            low = float(row[1])
-            high = float(row[2])
-            print("Low:", low, "High:", high)
-            return low, high
+            start_low = float(row[1])
+            start_high = float(row[2])
+            print(" Start trade Low:", start_low, "Start trade High:", start_high)
+            return start_low, start_high
 
-    print("Date-time not found in data.start_date_time")
+        if cell_value == validated_end_date_time:
+            end_low = float(row[1])
+            end_high = float(row[2])
+            print(" End trade Low:", end_low, "End trade High:", end_high)
+            return end_low, end_high
+
+    print("Date-time not found in data")
+
+def validate_start_time(start_date_time):
+    """Validate user datetime format and float input"""
+    # from cli import get_trade_details # trying to avoid circular passing from one function to another
+    
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
+
+    if re.match(pattern, start_date_time):
+        # converting input into a diff. var for next funct
+        validated_start_date_time = start_date_time # NameError: name 'validated_start_date_time' is not defined. Did you mean: 'validate_start_time'?
+        
+
+        return True, validated_start_date_time
+    return False, None
+
+
+def validate_end_time(end_date_time):
+    """Validate user datetime format and float input"""
+    # from cli import get_trade_details # trying to avoid circular passing from one function to another
+    
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
+
+    if re.match(pattern, end_date_time):
+        # converting input into a diff. var for next funct
+       
+        validated_end_date_time = end_date_time
+
+        return True, validated_end_date_time
+    return False, None
+
+
+
+
+# def calculate_trade():
+
+# Will take validated_start_date_time, validated_end_date_time, validated_trade_amount, validated_fee
+# calc itself: take the lowest amount of the two for the entry and highest for the exit and * by percentage. 
+# calc fee trade_amount * fee_percentage. trade outcome - fee
+# exit - entry
 
 # --------------------------------------------------------------------------------------------------- CLI
-
-def get_trade_details():
-
-   # from logic import validate_date_time
-    # from logic import retrieve_input_price
-
-    print("Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
-    start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00) \n")
-
-    while not validate_date_time(start_date_time):
-        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
-        start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00) \n")
-
-    # end_date_time = input("Enter End Date & Time (e.g., 2021-01-02 06:00:00) \n")
-    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n")
-
-    return start_date_time # end_date_time, float(fee_percentage)
 
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""
@@ -155,7 +198,7 @@ def display_end_program_message():
 def display_start_welcome_message():
     """1. Displays a welcome message to the user"""
     
-    print("Welcome to the BTC/USD Trade Backtesting tool!")
+    print("Welcome to the BTC/USD Trade Backtesting tool!\n")
     print("===============================================")
     print("Please choose from one of the following options:")
     choice = input("Enter 1 to backtest or 2 to exit: \n")
@@ -165,7 +208,7 @@ def display_start_welcome_message():
     elif choice == "2":
         display_end_program_message()
     else:
-        print("Not quite right. Please make sure your entry is 1 or 2 only")
+        print("!!! Not quite right. Please make sure your entry is 1 or 2 only\n")
         display_start_welcome_message()
 
 display_start_welcome_message()
