@@ -1,17 +1,22 @@
 import gspread
-import pytz # this is to help talk to api and specifiy the timezone we mean 
-import json
-import requests
+#import pytz # this is to help talk to api and specifiy the timezone we mean 
+#import json
+#import requests
 import os
 from google.oauth2.service_account import Credentials 
 
 from alpaca.data.historical import CryptoHistoricalDataClient
+# from alpaca_trade_api.rest import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
 from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 from datetime import datetime
 from alpaca_trade_api.rest import REST
 import alpaca_trade_api as tradeapi
 import traceback
+
+import re
+import warnings
+warnings.simplefilter(action='ignore', category=DeprecationWarning) #deprecation warning fix attept 
 
 # ------------------------------------------------ Gspread API setup
 
@@ -30,7 +35,10 @@ SHEET = GSPREAD_CLIENT.open('btc_usd_backtesting')
 historical_data = SHEET.worksheet('historical_data')
 data = historical_data.get_all_values()
 
+"""
 # ------------------------------------------------- Alpaca hsitorical data client
+
+def use_thsi_if_need_latest_data
 # Reference: https://alpaca.markets/docs/market-data/getting-started/ 
 
 
@@ -48,6 +56,7 @@ print(btc_bars)
 
 # ------------------------------------------------  WRITING ONTO GSHEET
 
+
 last_entry = historical_data.row_values(len(historical_data.col_values(1)))
 print(last_entry) # ['2023-10-19 00:00:00', '28300.878', '28345.3785']
 
@@ -64,13 +73,99 @@ for data_point in btc_bars["BTC/USD"]:
 insert_into_last_empty_row = len(historical_data.col_values(1))  # counts through the rows till the last filled one and +1 find the next empty row
 # it printed 2023-10-19 00:00:00 twice  and since I have asked to plus 1 here - len(historical_data.col_values(1)) + 1 it printed the 2023-10-19 00:00:00 on the next line. 
 # I am removing the +1 so that It can print over the same date. 
-# Furthermore - I will be calling only for a day before because it fills till 00:00:00 for the day
+# Furthermore - I will be calling only ecause it fills till 00:00:00 for the day
 
 historical_data.insert_rows(data_to_insert, row=insert_into_last_empty_row, value_input_option='RAW')
+"""
 
+# --------------------------------------------------------------------------------------------------- LOGIC
 
+def validate_date_time(start_date_time):
+    """Validate user datetime format and float input"""
+    # from cli import get_trade_details # trying to avoid circular passing from one function to another
+    
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
 
+    if re.match(pattern, start_date_time):
+        start_date_time = validated_start_date_time = start_date_time # converting input into a diff. var for next funct
+        return True, validated_start_date_time
+    return False, None
 
+def retrieve_input_price(validated_start_date_time): # using start date time for now only
+    '''Retrieve low and high prices from user chosen dates and times'''
+    #from logic import retrieve_input_price # need to introduce module so that it recognises start_date_time
 
+    for row in rows[1:]:  # start from the second row, assuming first row is headers
+        cell_value = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S")
+        
+        if cell_value == validated_start_date_time: 
+            low = float(row[1])
+            high = float(row[2])
+            print("Low:", low, "High:", high)
+            return low, high
 
+    print("Date-time not found in data.start_date_time")
 
+# --------------------------------------------------------------------------------------------------- CLI
+
+def get_trade_details():
+
+   # from logic import validate_date_time
+    # from logic import retrieve_input_price
+
+    print("Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+    start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    while not validate_date_time(start_date_time):
+        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+        start_date_time = input("Enter Start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    # end_date_time = input("Enter End Date & Time (e.g., 2021-01-02 06:00:00) \n")
+    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n")
+
+    return start_date_time # end_date_time, float(fee_percentage)
+
+def display_go_again_ask_message():
+    """Asks the user if they want to input another trade"""
+
+    while True:
+        print("Would you like to backtest another trade?")
+        print("===============================================")
+        choice = input("Enter 1 to backtest again or 2 to exit: \n")
+
+    if choice == "1":
+        get_trade_details()
+        return
+    elif choice == "2":
+        display_end_program_message()
+        return
+    else:
+        print("Please make sure to enter 1 or 2 only. Go again.")
+        display_go_again_ask_message()
+        # so we have an issue where the fucntion is calling itself and it takes a long time to respond after i press 1
+
+def display_end_program_message():
+    """7. Gives an exit message to the user"""
+
+    print("Thank you for using the BTC/USD Trade Backtester. Happy Trading!")
+    # display_end_program_message()
+
+# Put the beginning at the end because I needed to define all the functions that I will call below for it to work
+def display_start_welcome_message():
+    """1. Displays a welcome message to the user"""
+    
+    print("Welcome to the BTC/USD Trade Backtesting tool!")
+    print("===============================================")
+    print("Please choose from one of the following options:")
+    choice = input("Enter 1 to backtest or 2 to exit: \n")
+
+    if choice == "1":
+        start_date_time = get_trade_details()
+    elif choice == "2":
+        display_end_program_message()
+    else:
+        print("Not quite right. Please make sure your entry is 1 or 2 only")
+        display_start_welcome_message()
+
+display_start_welcome_message()
