@@ -77,31 +77,6 @@ insert_into_last_empty_row = len(historical_data.col_values(1))  # counts throug
 
 historical_data.insert_rows(data_to_insert, row=insert_into_last_empty_row, value_input_option='RAW')
 """
-# ---------------CLI
-
-
-def get_trade_details():
-
-    print("Please enter the trade in the following format YYYY-MM-DD HH:MM:SS\n")
-
-    start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
-
-    while not validate_start_time(start_date_time):
-        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
-        start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
-
-    end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
-    
-    while not validate_end_time(end_date_time):
-        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
-        end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
-
-    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n")
-    # trade_amount = input("Enter Trade Amount in USD")
-
-    return start_date_time, end_date_time  # Return both start_date_time and end_date_time
-
-
 
 # --------------------------------------------------------------------------------------------------- LOGIC
 
@@ -128,35 +103,29 @@ def retrieve_input_price(validated_start_date_time, validated_end_date_time): # 
 
 def validate_start_time(start_date_time):
     """Validate user datetime format and float input"""
-    # from cli import get_trade_details # trying to avoid circular passing from one function to another
+    # from cli import get_trade_start_dates # trying to avoid circular passing from one function to another
     
     pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
     # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
 
-    if re.match(pattern, start_date_time):
-        # converting input into a diff. var for next funct
-        validated_start_date_time = start_date_time # NameError: name 'validated_start_date_time' is not defined. Did you mean: 'validate_start_time'?
-        
-
-        return True, validated_start_date_time
-    return False, None
-
+    return bool(re.match(pattern, start_date_time))
 
 def validate_end_time(end_date_time):
     """Validate user datetime format and float input"""
-    # from cli import get_trade_details # trying to avoid circular passing from one function to another
+    # from cli import get_trade_dates # trying to avoid circular passing from one function to another
     
     pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
     # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
 
-    if re.match(pattern, end_date_time):
-        # converting input into a diff. var for next funct
-       
-        validated_end_date_time = end_date_time
+    return bool(re.match(pattern, end_date_time))
 
-        return True, validated_end_date_time
-    return False, None
+def validate_trade_fee(fee_amount):
+    """Validate user trade fee input"""
+    
 
+
+def validate_trade_amount():
+    """Validate user trade amount input"""
 
 
 
@@ -168,6 +137,69 @@ def validate_end_time(end_date_time):
 # exit - entry
 
 # --------------------------------------------------------------------------------------------------- CLI
+'''
+def get_trade_dates():
+    """Requesting start and end trading dates and times from the user"""
+
+    print("Please enter the trade in the following format YYYY-MM-DD HH:MM:SS\n")
+
+    start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    while not validate_start_time(start_date_time):
+        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+        start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+    end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
+    
+    while not validate_end_time(end_date_time):
+        print("Invalid format. Please enter the Date & Time in the following format YYYY-MM-DD HH:MM:SS\n")
+        end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
+
+    return start_date_time, end_date_time  # Return both start_date_time and end_date_time
+'''
+def get_trade_start_dates():
+    """Requesting start trading date and time from the user"""
+
+    while True:
+        start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+
+        if validate_start_time(start_date_time):
+            break  # Exit the loop if a valid start date and time is provided
+
+        print("Invalid format for start date and time. Please try again.\n")
+
+    return start_date_time
+
+def get_trade_end_dates():
+    """Requesting end trading date and time from the user"""
+
+    while True:
+        end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
+
+        if validate_end_time(end_date_time):
+            break  # Exit the loop if a valid end date and time is provided
+
+        print("Invalid format for end date and time. Please try again.\n")
+
+    return end_date_time  # Return both start_date_time and end_date_time
+
+
+def get_trade_fee():
+    """Requesting trading fee from a user"""
+
+    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n"
+    print("Plese enter the trade fee percentage amount")
+    fee_amount = float(input("Input fee (eg., 0.5)"))
+    return fee_amount
+
+def get_trade_amount():
+    """Requsting a trade amount in USD from the user"""
+
+    
+    print("Please enter the trade amount in USD")
+    trade_amount = float(input("Enter Trade amount in USD (e.g. 100)"))
+    return trade_amount
+
 
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""
@@ -178,7 +210,7 @@ def display_go_again_ask_message():
         choice = input("Enter 1 to backtest again or 2 to exit: \n")
 
     if choice == "1":
-        get_trade_details()
+        get_trade_start_dates()
         return
     elif choice == "2":
         display_end_program_message()
@@ -198,17 +230,23 @@ def display_end_program_message():
 def display_start_welcome_message():
     """1. Displays a welcome message to the user"""
     
-    print("Welcome to the BTC/USD Trade Backtesting tool!\n")
+    print("Welcome to the BTC/USD Trade Backtesting tool! Please keep in mind that trade information should be provided in the following format: YYYY-MM-DD HH:MM:SS. Additionally, please be aware that the available data starts from the year 2021 and is recorded at 15-minute intervals.\n")
     print("===============================================")
     print("Please choose from one of the following options:")
     choice = input("Enter 1 to backtest or 2 to exit: \n")
 
     if choice == "1":
-        start_date_time = get_trade_details()
+        start_date_time = get_trade_start_dates()
     elif choice == "2":
         display_end_program_message()
     else:
         print("!!! Not quite right. Please make sure your entry is 1 or 2 only\n")
         display_start_welcome_message()
 
+# Calling fumct
 display_start_welcome_message()
+
+start_date_time = get_trade_start_dates()
+end_date_time = get_trade_end_dates()
+fee_amount = get_trade_fee()
+trade_amount = get_trade_amount()
