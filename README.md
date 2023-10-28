@@ -1,32 +1,70 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+![BTC/USD Backtester](https://btc-usd-backtester-645f261abdd8.herokuapp.com/)
 
-Welcome,
+# BTC/USD Backtester
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+The BTC/USD Backtester is a simple command-line application for backtesting a hypothetical Bitcoin trade against historical pricing data.
 
-## Reminders
+## How to Use
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+1. Run the app.
+2. Enter `1` to backtest a trade or `2` to exit when prompted.
+3. Input the trade details (start date/time, end date/time, fee percentage).
+4. View the results including starting price, ending price, fees, and profit/loss.
 
-## Creating the Heroku app
+## Features
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+- Validates user inputs for proper datetime format and valid fee percentage.
+- Retrieves historical BTC/USD pricing data from a Google Sheet.
+- Calculates profit or loss for the backtested trade including fees.
+- Provides clear user prompting and error handling.
 
-1. `heroku/python`
-2. `heroku/nodejs`
+## Data Model
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+The app uses a Google Sheet with pricing data structured 
+Timestamp	Low	High
+2021-01-01 06:00:00	29237.45	29338.25
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
 
-Connect your GitHub repository and deploy as normal.
+## User Stories
 
-## Constraints
+### Casual Crypto Enthusiast - Easy Backtest
+- I want to: Understand how much profit (or loss) I would've made by buying and selling BTC on specific dates.
+- So that: I can see how well I would've done if I'd acted on my hunches.
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+#### Acceptance Criteria
+- The tool should allow me to easily input the buy and sell dates/times.
+- It should display a simple breakdown: initial investment, final value, gross profit/loss, fee amount, and net profit/loss.
+- There should be an easy and clear user guide that helps me understand how to use the tool without prior backtesting experience.
 
----
+### Aspiring Trader - Impact of Fees
+- I want to: Understand how much profit (or loss) I would've made by buying and selling BTC on specific dates.
+- So that: I can see how even a single trade is influenced by fees, setting the foundation for my understanding before I scale up to multiple trades.
 
-Happy coding!
+#### Acceptance Criteria
+- The tool should allow me to input single trade (buy/sell pair).
+- It should provide a breakdown of results for a trade, highlighting the fees.
+- The tool should emphasize the difference between the gross outcome and net outcome (after fees).
+- A brief note on the impact of fees and how they can add up with increased trading frequency would be educational.
+
+### Researcher - Historical Price Exploration: reputable source 
+- I want to: Explore historical BTC/USD prices for specific timeframes.
+- So that: I can gather insights on price movements and volatility for my research.
+
+#### Acceptance Criteria:
+- The tool should allow me to input a start and end date/time.
+- It should display the opening, closing, highest, and lowest prices within that timeframe.
+- A simple visualization or chart (even if it's just a link to the Google Sheet's chart) would be a bonus.
+- It would be beneficial to have a note or reference on where the historical data comes from to ensure its reliability.
+
+
+## ISSUE I RAN INTO
+- I used Alpaca API and alpaca-py library with a client and successfully retrieved data till 2021, but I would get empty lists after that date.  The free tier promised to give 5 + years of free historical data and I reached out to support. I have reached out to support who confired that they have data till 2021. 
+
+# I am not done - go ahead and fail me! i need to redo this. working and studying is hard and i needed to pick a less ambitious project - but I didn't know how much work it would take untill i started doing it because I am only learning on the go. 
+# Also - we need 4 session for 1 2 1 not 3. It's in now way at all enough! And need more support and waaaay longer time to do it. Calendar needs to give one month! Not a week and 121 session that is a final one needs to be a week before the deadline where I have it done! 
+# But it's just the way the cookie crumbles doesn't it! Anyhoo! we try and we try! 
+# I still dont understant how to use my IDE!!!! Helloooo!!!!
+
+
+
+

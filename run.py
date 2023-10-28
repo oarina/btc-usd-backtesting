@@ -121,7 +121,15 @@ def validate_end_time(end_date_time):
 
 def validate_trade_fee(fee_amount):
     """Validate user trade fee input"""
-    
+        if not re.match(r'^\d+\.\d+$', fee_amount):
+        return False
+
+  # Convert to float and check range    
+        fee = float(fee_amount)
+        if fee < 0.0 or fee > 1.0:
+        return False
+
+        return True
 
 
 def validate_trade_amount():
@@ -200,7 +208,6 @@ def get_trade_amount():
     trade_amount = float(input("Enter Trade amount in USD (e.g. 100)"))
     return trade_amount
 
-
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""
 
@@ -237,6 +244,9 @@ def display_start_welcome_message():
 
     if choice == "1":
         start_date_time = get_trade_start_dates()
+        end_date_time = get_trade_end_dates()
+        fee_amount = get_trade_fee()
+        trade_amount = get_trade_amount()
     elif choice == "2":
         display_end_program_message()
     else:
@@ -246,7 +256,7 @@ def display_start_welcome_message():
 # Calling fumct
 display_start_welcome_message()
 
-start_date_time = get_trade_start_dates()
-end_date_time = get_trade_end_dates()
-fee_amount = get_trade_fee()
-trade_amount = get_trade_amount()
+
+
+    
+
