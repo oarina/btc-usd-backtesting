@@ -10,8 +10,8 @@ from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
 from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 from datetime import datetime
-from alpaca_trade_api.rest import REST
-import alpaca_trade_api as tradeapi
+#from alpaca_trade_api.rest import REST
+#import alpaca_trade_api as tradeapi
 import traceback
 
 import re
@@ -115,22 +115,24 @@ def validate_end_time(end_date_time):
     # from cli import get_trade_dates # trying to avoid circular passing from one function to another
     
     pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
-    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
 
     return bool(re.match(pattern, end_date_time))
 
 def validate_trade_fee(fee_amount):
     """Validate user trade fee input"""
-        if not re.match(r'^\d+\.\d+$', fee_amount):
+
+    pattern = r'^0(\.\d+)?|1(\.0+)?$'
+
+    if re.match(pattern, fee_amount): 
+        
         return False
 
   # Convert to float and check range    
         fee = float(fee_amount)
-        if fee < 0.0 or fee > 1.0:
+    if fee < 0.0 or fee > 1.0:
         return False
 
         return True
-
 
 def validate_trade_amount():
     """Validate user trade amount input"""
@@ -172,6 +174,7 @@ def get_trade_start_dates():
         start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
 
         if validate_start_time(start_date_time):
+            print("\n Inputs collected. Proceeding to next step...\n ")
             break  # Exit the loop if a valid start date and time is provided
 
         print("Invalid format for start date and time. Please try again.\n")
@@ -185,19 +188,19 @@ def get_trade_end_dates():
         end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
 
         if validate_end_time(end_date_time):
+            print("\n Inputs collected. Proceeding to next step...\n")
             break  # Exit the loop if a valid end date and time is provided
-
+ 
         print("Invalid format for end date and time. Please try again.\n")
 
     return end_date_time  # Return both start_date_time and end_date_time
 
-
 def get_trade_fee():
     """Requesting trading fee from a user"""
 
-    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5): \n"
-    print("Plese enter the trade fee percentage amount")
-    fee_amount = float(input("Input fee (eg., 0.5)"))
+    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5) \n"
+    print("Plese enter the trade fee percentage amount")s
+    fee_amount = float(input("Input fee (eg., 0.5) \n"))
     return fee_amount
 
 def get_trade_amount():
@@ -205,7 +208,7 @@ def get_trade_amount():
 
     
     print("Please enter the trade amount in USD")
-    trade_amount = float(input("Enter Trade amount in USD (e.g. 100)"))
+    trade_amount = float(input("Enter Trade amount in USD (e.g. 100) \n"))
     return trade_amount
 
 def display_go_again_ask_message():
@@ -237,11 +240,15 @@ def display_end_program_message():
 def display_start_welcome_message():
     """1. Displays a welcome message to the user"""
     
-    print("Welcome to the BTC/USD Trade Backtesting tool! Please keep in mind that trade information should be provided in the following format: YYYY-MM-DD HH:MM:SS. Additionally, please be aware that the available data starts from the year 2021 and is recorded at 15-minute intervals.\n")
+    print("Welcome to the BTC/USD Trade Backtesting tool! Please keep in mind that trade information should be provided in the following format: YYYY-MM-DD HH:MM:SS. Additionally, please be aware that the available data is stored in 15 minute candles and starts from the year 2021.\n")
     print("===============================================")
     print("Please choose from one of the following options:")
-    choice = input("Enter 1 to backtest or 2 to exit: \n")
+    display_user_flow_options()
 
+def display_user_flow_options():
+    """Provides user with options to either a trade or exit"""
+
+    choice = input("Enter 1 to backtest or 2 to exit: \n")
     if choice == "1":
         start_date_time = get_trade_start_dates()
         end_date_time = get_trade_end_dates()
@@ -251,7 +258,7 @@ def display_start_welcome_message():
         display_end_program_message()
     else:
         print("!!! Not quite right. Please make sure your entry is 1 or 2 only\n")
-        display_start_welcome_message()
+        display_user_flow_options()
 
 # Calling fumct
 display_start_welcome_message()
