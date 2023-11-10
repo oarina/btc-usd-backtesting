@@ -124,7 +124,7 @@ def validate_trade_fee(fee_amount):
     pattern = r'^0(\.\d+)?|1(\.0+)?$'
 
     if re.match(pattern, fee_amount): 
-        
+
         return False
 
   # Convert to float and check range    
@@ -134,9 +134,23 @@ def validate_trade_fee(fee_amount):
 
         return True
 
-def validate_trade_amount():
+def validate_trade_amount(trade_amount):
     """Validate user trade amount input"""
+    # What trade amount range is acceptable? 100$ to 1,000,000 $ 
+    # I don't want the user to input commas or $ sign for ease of use
 
+    # what about the floating points? uhhhh! It could be both! Below REGEX should do that =) 
+    pattern = r'^\d+(\.\d+)?$' 
+
+    if not re.match(pattern, trade_amount):
+        
+        return False
+
+    trade_amount = float(trade_amount)
+    if trade_amount < 100 or trade_amount > 1000000:
+        return False
+
+        return True    
 
 
 # def calculate_trade():
@@ -199,7 +213,7 @@ def get_trade_fee():
     """Requesting trading fee from a user"""
 
     # fee_percentage = input("Enter Fee Percentage (e.g., 0.5) \n"
-    print("Plese enter the trade fee percentage amount")s
+    print("Plese enter the trade fee percentage amount")
     fee_amount = float(input("Input fee (eg., 0.5) \n"))
     return fee_amount
 
@@ -262,7 +276,6 @@ def display_user_flow_options():
 
 # Calling fumct
 display_start_welcome_message()
-
 
 
     
