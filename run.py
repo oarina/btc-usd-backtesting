@@ -123,7 +123,7 @@ def validate_trade_fee(fee_amount):
 
     pattern = r'^0(\.\d+)?|1(\.0+)?$'
 
-    if re.match(pattern, fee_amount): 
+    if not re.match(pattern, fee_amount): 
 
         return False
 
@@ -213,16 +213,27 @@ def get_trade_fee():
     """Requesting trading fee from a user"""
 
     # fee_percentage = input("Enter Fee Percentage (e.g., 0.5) \n"
-    print("Plese enter the trade fee percentage amount")
-    fee_amount = float(input("Input fee (eg., 0.5) \n"))
+
+    while True:
+        fee_amount = float(input("Enter Trade Fee Percentage (eg., 0.5) \n"))
+
+        if validate_trade_fee(fee_amount):
+             print("\n Inputs collected. Proceeding to next step...\n")
+             break
+
     return fee_amount
 
 def get_trade_amount():
     """Requsting a trade amount in USD from the user"""
 
     
-    print("Please enter the trade amount in USD")
-    trade_amount = float(input("Enter Trade amount in USD (e.g. 100) \n"))
+    while True:
+        trade_amount = float(input("Enter Trade amount in USD (e.g. 100) \n"))
+
+        if validate_trade_amount(trade_amount):
+            print("\n Inputs collected. Proceeding to next step...\n")
+            break
+            
     return trade_amount
 
 def display_go_again_ask_message():
@@ -253,10 +264,17 @@ def display_end_program_message():
 # Put the beginning at the end because I needed to define all the functions that I will call below for it to work
 def display_start_welcome_message():
     """1. Displays a welcome message to the user"""
-    
-    print("Welcome to the BTC/USD Trade Backtesting tool! Please keep in mind that trade information should be provided in the following format: YYYY-MM-DD HH:MM:SS. Additionally, please be aware that the available data is stored in 15 minute candles and starts from the year 2021.\n")
+   
+    print("\n\n===============================================\n\n")
+    print("---------BTC/USD Trade Backtesting Tool--------\n\n")
+    print("===============================================\n")
+
+    print("Please keep in mind that trade information should be provided in the following format: YYYY-MM-DD HH:MM:SS.")
+    print("Additionally, please be aware that the available data is stored in 15-minute candles and starts from the year 2021.\n")
+
     print("===============================================")
     print("Please choose from one of the following options:")
+
     display_user_flow_options()
 
 def display_user_flow_options():
