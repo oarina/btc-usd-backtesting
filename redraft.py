@@ -39,3 +39,9 @@ def trade_fee():
             return fee_amount
 
 trade_fee()
+
+
+# this is an improved version - I will need to 1. finish the trade amount and 2. then make the data pull work
+# --after that 3. I can update the original functions =) and 4 . 
+# --use the 3 time.sleep dots for when computer is pulling data from the sheet and calculating! Dont use that on every function - it would be annoying
+# ----------also - app goes in circles - maybe I need to add abort for those who are not bothered to go through with the whole flow? 
