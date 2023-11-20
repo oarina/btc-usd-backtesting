@@ -122,6 +122,7 @@ def validate_trade_fee(fee_amount):
     """Validate user trade fee input"""
 
     pattern = r'^0(\.\d+)?|1(\.0+)?$'
+    # must start with a 0 -
 
     if not re.match(pattern, fee_amount): 
 
@@ -215,11 +216,13 @@ def get_trade_fee():
     # fee_percentage = input("Enter Fee Percentage (e.g., 0.5) \n"
 
     while True:
-        fee_amount = float(input("Enter Trade Fee Percentage (eg., 0.5) \n"))
+        fee_amount = float(input("Enter Trade Fee Percentage from 0% to 1% (eg., 0.5) \n"))
 
         if validate_trade_fee(fee_amount):
              print("\n Inputs collected. Proceeding to next step...\n")
              break
+        
+        print("Invalid percentage. Please try again.\n")
 
     return fee_amount
 

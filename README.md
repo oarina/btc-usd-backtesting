@@ -64,6 +64,11 @@ Timestamp	Low	High
 - I used Alpaca API and alpaca-py library with a client and successfully retrieved data till 2021, but I would get empty lists after that date.  The free tier promised to give 5 + years of free historical data and I reached out to support. I have reached out to support who confired that they have data till 2021. 
 
 
+- References that I used. Regex pattern matching in python: https://www.youtube.com/watch?v=5d3vQ8N0MJg and https://www.youtube.com/watch?v=nxjwB8up2gI
+- Ref's for time.seep() a tiny pause in code processing: https://realpython.com/python-sleep/#:~:text=The%20time%20module%20has%20a,however%20many%20seconds%20you%20specify.&text=If%20you%20run%20this%20code,new%20statement%20in%20the%20REPL 
+- Ref to the flush https://realpython.com/python-flush-print-output/ 
+- Throwaway variable: https://www.studytonight.com/python-howtos/how-to-use-single-underscore-_-in-python-variable 
+
 
 
 
