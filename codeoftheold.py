@@ -229,6 +229,7 @@ def get_trade_fee():
 def get_trade_amount():
     """Requsting a trade amount in USD from the user"""
 
+    
     while True:
         trade_amount = float(input("Enter Trade amount in USD (e.g. 100) \n"))
 

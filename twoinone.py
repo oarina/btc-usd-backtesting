@@ -1,0 +1,39 @@
+import re
+from time import sleep
+
+'''
+def cli_printing_processing_for_user():
+    """visual effect of 3 dots printing one after the other after the input phrase as a visual effect for when user prints a valid requested input"""
+ 
+    print("\nInputs collected. Proceeding to next step ", end="")
+
+    for _ in range(3):  # Number of dots
+        sleep(1) 
+        print(".", end="", flush=True) # https://realpython.com/python-flush-print-output/ 
+    print("\n")  # Move to the next line after the dots = jls_extract_def() = jls_extract_def()
+'''
+
+
+
+# this is an improved version - I will need to 1. finish the trade amount and 2. then make the data pull work
+# --after that 3. I can update the original functions =) and 4 . 
+# --use the 3 time.sleep dots for when computer is pulling data from the sheet and calculating! Dont use that on every function - it would be annoying
+# ----------also - app goes in circles - maybe I need to add abort for those who are not bothered to go through with the whole flow? 
+
+def two_in_one_funct():
+
+    pattern = r'^0(\.\d+)?|1(\.0+)?$' 
+
+    while True:
+        fee_amount = input("Enter Trade Fee Percentage from 0% to 1% (eg., 0.5) \n") # at this point is a string
+ 
+        if re.match(pattern, fee_amount) is None:
+            print(f"{fee_amount} is an invalid percentage. Please try again.\n")
+        else:
+            print(" Inputs collected. Proceeding to next step ")
+            return fee_amount # teturns that sweet sweet fee!
+
+two_in_one_funct()
+
+
+Ok now at this poin 
