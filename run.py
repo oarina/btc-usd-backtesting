@@ -101,59 +101,6 @@ def retrieve_input_price(validated_start_date_time, validated_end_date_time): # 
 
     print("Date-time not found in data")
 
-def validate_start_time(start_date_time):
-    """Validate user datetime format and float input"""
-    # from cli import get_trade_start_dates # trying to avoid circular passing from one function to another
-    
-    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
-    # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
-
-    return bool(re.match(pattern, start_date_time))
-
-def validate_end_time(end_date_time):
-    """Validate user datetime format and float input"""
-    # from cli import get_trade_dates # trying to avoid circular passing from one function to another
-    
-    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
-
-    return bool(re.match(pattern, end_date_time))
-
-def validate_trade_fee(fee_amount):
-    """Validate user trade fee input"""
-
-    pattern = r'^0(\.\d+)?|1(\.0+)?$'
-    # must start with a 0 -
-
-    if not re.match(pattern, fee_amount): 
-
-        return False
-
-  # Convert to float and check range  - this part is not necessary   
-        fee = float(fee_amount)
-    if fee < 0.0 or fee > 1.0:
-        return False
-
-        return True
-
-def validate_trade_amount(trade_amount):
-    """Validate user trade amount input"""
-    # What trade amount range is acceptable? 100$ to 1,000,000 $ 
-    # I don't want the user to input commas or $ sign for ease of use
-
-    # what about the floating points? uhhhh! It could be both! Below REGEX should do that =) 
-    pattern = r'^\d+(\.\d+)?$' 
-
-    if not re.match(pattern, trade_amount):
-        
-        return False
-
-    trade_amount = float(trade_amount)
-    if trade_amount < 100 or trade_amount > 1000000:
-        return False
-
-        return True    
-
-
 # def calculate_trade():
 
 # Will take validated_start_date_time, validated_end_date_time, validated_trade_amount, validated_fee
@@ -161,7 +108,7 @@ def validate_trade_amount(trade_amount):
 # calc fee trade_amount * fee_percentage. trade outcome - fee
 # exit - entry
 
-# --------------------------------------------------------------------------------------------------- CLI
+# --------------------------------------------------------------------------------------------------- INPUT and Processing
 '''
 def get_trade_dates():
     """Requesting start and end trading dates and times from the user"""
@@ -185,58 +132,80 @@ def get_trade_dates():
 def get_trade_start_dates():
     """Requesting start trading date and time from the user"""
 
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+     # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
+
     while True:
         start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
 
-        if validate_start_time(start_date_time):
+        if bool(re.match(pattern, start_date_time)):
             print("\n Inputs collected. Proceeding to next step...\n ")
             break  # Exit the loop if a valid start date and time is provided
-
-        print("Invalid format for start date and time. Please try again.\n")
-
-    return start_date_time
+        else:    
+            print("Invalid format for start date and time. Please try again.\n")
+            return start_date_time
 
 def get_trade_end_dates():
     """Requesting end trading date and time from the user"""
 
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+
     while True:
         end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
 
-        if validate_end_time(end_date_time):
+        if bool(re.match(pattern, end_date_time)):
             print("\n Inputs collected. Proceeding to next step...\n")
             break  # Exit the loop if a valid end date and time is provided
- 
-        print("Invalid format for end date and time. Please try again.\n")
-
-    return end_date_time  # Return both start_date_time and end_date_time
+        else:
+            print("Invalid format for end date and time. Please try again.\n")
+            return end_date_time  # Return both start_date_time and end_date_time
 
 def get_trade_fee():
     """Requesting trading fee from a user"""
-
-    # fee_percentage = input("Enter Fee Percentage (e.g., 0.5) \n"
+    
+    pattern = r'^0(\.\d+)?|1(\.0+)?$' # stirng 
 
     while True:
-        fee_amount = float(input("Enter Trade Fee Percentage from 0% to 1% (eg., 0.5) \n"))
-
-        if validate_trade_fee(fee_amount):
-             print("\n Inputs collected. Proceeding to next step...\n")
-             break
+        fee_amount = (input("Enter Trade Fee Percentage from 0% to 1% (eg., 0.5) \n")) # string
         
-        print("Invalid percentage. Please try again.\n")
-
-    return fee_amount
+        if (re.match(pattern, fee_amount)) is None:
+            print(f"{fee_amount} is an invalid percentage. Please try again.\n")
+        else:
+            print("\n Inputs collected. Proceeding to next step...\n")
+            return fee_amount # this future float is still a string 
 
 def get_trade_amount():
     """Requsting a trade amount in USD from the user"""
 
     while True:
-        trade_amount = float(input("Enter Trade amount in USD (e.g. 100) \n"))
+        trade_amount = (input("Enter Trade amount in USD (e.g. 100) \n"))
 
         if validate_trade_amount(trade_amount):
+         #   trade_amount = float(trade_amount)
             print("\n Inputs collected. Proceeding to next step...\n")
             break
             
     return trade_amount
+
+
+def validate_trade_amount(trade_amount):
+    """Validate user trade amount input"""
+    # What trade amount range is acceptable? 100$ to 1,000,000 $ 
+    # I don't want the user to input commas or $ sign for ease of use
+
+    # what about the floating points? uhhhh! It could be both! Below REGEX should do that =) 
+    pattern = r'^\d+(\.\d+)?$' 
+
+    if not re.match(pattern, trade_amount):
+        return False
+
+    trade_amount = float(trade_amount)
+    if trade_amount < 100 or trade_amount > 1000000:
+        return False
+
+        return True    
+
+ # --------------------------------------------------------------------------------------------------- CLI       
 
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""

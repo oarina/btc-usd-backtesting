@@ -35,5 +35,38 @@ def two_in_one_funct():
 
 two_in_one_funct()
 
+"""
+def validate_start_time(start_date_time):
+    # from cli import get_trade_start_dates # trying to avoid circular passing from one function to another
+    
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
 
-Ok now at this poin 
+    return bool(re.match(pattern, start_date_time))
+
+
+def validate_end_time(end_date_time):
+    """Validate user datetime format and float input"""
+    # from cli import get_trade_dates # trying to avoid circular passing from one function to another
+    
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+
+    return bool(re.match(pattern, end_date_time))
+"""
+
+"""
+def validate_trade_fee(fee_amount):
+
+    pattern = r'^0(\.\d+)?|1(\.0+)?$'
+    # must start with a 0 -
+
+    if not re.match(pattern, fee_amount): 
+
+        return False
+
+  # Convert to float and check range  - this part is not necessary   
+        fee = float(fee_amount)
+    if fee < 0.0 or fee > 1.0:
+        return False
+
+        return True
+"""
