@@ -69,4 +69,23 @@ def validate_trade_fee(fee_amount):
         return False
 
         return True
+
+
+def validate_trade_amount(trade_amount):
+    """Validate user trade amount input"""
+    # What trade amount range is acceptable? 100$ to 1,000,000 $ 
+    # I don't want the user to input commas or $ sign for ease of use
+
+    # what about the floatin
+    # points? uhhhh! It could be both! Below REGEX should do that =) 
+    pattern = r'^\d+(\.\d+)?$' 
+
+    if not re.match(pattern, trade_amount):
+        return False
+
+    trade_amount = float(trade_amount)
+    if trade_amount < 100 or trade_amount > 1000000:
+        return False
+
+        return True    
 """
