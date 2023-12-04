@@ -1,31 +1,32 @@
 import re
 
-def funct():
 
-    pattern = r'^(?:100(?:\.0+)?|[1-9]\d{2,6}(?:\.\d+)?)$'
+def get_trade_start_dates():
+    """Requesting start trading date and time from the user"""
+
+    pattern = r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$'
+     # https://stackoverflow.com/questions/69806492/regex-d4-d2-d2 
 
     while True:
-        fee = float(input("enter number")) #float
-        print(fee)
+        start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
 
-        # String - if pattern match then move to next step
-            #  string  - to float or int.? numeric
-                # if in range 
-      
+        entered_start_date_time = re.match(pattern, start_date_time)
+
+        if entered_start_date_time is None:
+            print("Invalid format for start date and time. Please try again.\n")
+            
+        else:    
+            print("\n Inputs collected. Proceeding to next step...\n ")
+            print(entered_start_date_time) # <re.Match object; span=(0, 19), match='2021-01-01 06:00:00'>
+            validated = "" # this fixsed naming match error
+            entered_start_date_time = validated
+            print(validated)
+            return validated
 
 
-
-funct()
-
-'''  if re.match(pattern, fee):
-            print("match:", fee)'''
-               # pattern = r'^0(\.\d+)?|1(\.0+)?$' # this accespts a 1 =/
-
+get_trade_start_dates()
 '''
-
-Would the user need all those decimals if they are an aspiring trader?
-
-
+learniing here is that I have not converted the re.match maybe, 
+but at least, declaring var beforehand with "" sting assignmnet fixes the NameError 
+that I got previously
 '''
-
-def validation():

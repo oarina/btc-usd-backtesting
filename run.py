@@ -78,7 +78,7 @@ insert_into_last_empty_row = len(historical_data.col_values(1))  # counts throug
 historical_data.insert_rows(data_to_insert, row=insert_into_last_empty_row, value_input_option='RAW')
 """
 
-# --------------------------------------------------------------------------------------------------- LOGIC
+# --------------------------------------------------------------------------------------------------- RETRIEVE AND CALCULATE
 
 def retrieve_input_price(validated_start_date_time, validated_end_date_time): # using start date time for now only
     '''Retrieve low and high prices from user chosen dates and times'''
@@ -108,7 +108,7 @@ def retrieve_input_price(validated_start_date_time, validated_end_date_time): # 
 # calc fee trade_amount * fee_percentage. trade outcome - fee
 # exit - entry
 
-# --------------------------------------------------------------------------------------------------- INPUT and Processing
+# --------------------------------------------------------------------------------------------------- REQUEST AND VALIDATE INPUT
 '''
 def get_trade_dates():
     """Requesting start and end trading dates and times from the user"""
@@ -138,12 +138,12 @@ def get_trade_start_dates():
     while True:
         start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
 
-        if bool(re.match(pattern, start_date_time)):
+        if (re.match(pattern, start_date_time)) is None:
+            print(f"{start_date_time} is an invalid format for start date and time. Please try again.\n")
+        else:
             print("\n Inputs collected. Proceeding to next step...\n ")
-            break  # Exit the loop if a valid start date and time is provided
-        else:    
-            print("Invalid format for start date and time. Please try again.\n")
-            return start_date_time
+            start_date_time = validated_start_date_time
+            return validated_start_date_time
 
 def get_trade_end_dates():
     """Requesting end trading date and time from the user"""
@@ -153,12 +153,12 @@ def get_trade_end_dates():
     while True:
         end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
 
-        if bool(re.match(pattern, end_date_time)):
-            print("\n Inputs collected. Proceeding to next step...\n")
-            break  # Exit the loop if a valid end date and time is provided
+        if (re.match(pattern, end_date_time)) is None:
+              print(f"{end_date_time} is an nvalid format for end date and time. Please try again.\n")
         else:
-            print("Invalid format for end date and time. Please try again.\n")
-            return end_date_time  # Return both start_date_time and end_date_time
+            print("\n Inputs collected. Proceeding to next step...\n")
+            end_date_time  = validated_end_date_time
+            return validated_end_date_time
 
 def get_trade_fee():
     """Requesting trading fee from a user"""
@@ -188,8 +188,8 @@ def get_trade_amount():
             print("\n Inputs collected. Proceeding to next step...\n")
             return trade_amount
 
- # --------------------------------------------------------------------------------------------------- CLI       
-
+# --------------------------------------------------------------------------------------------------- CLI       
+# --------------------------------------------------------------------------------------------------- CORE PATHWAYS/USER FLOW
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""
 
