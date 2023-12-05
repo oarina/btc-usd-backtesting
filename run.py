@@ -137,12 +137,14 @@ def get_trade_start_dates():
 
     while True:
         start_date_time = input("Enter Trade start Date & Time (e.g., 2021-01-01 06:00:00) \n")
+        
+        entered_start_date_time = re.match(pattern, start_date_time) 
 
-        if (re.match(pattern, start_date_time)) is None:
+        if entered_start_date_time is None:
             print(f"{start_date_time} is an invalid format for start date and time. Please try again.\n")
         else:
             print("\n Inputs collected. Proceeding to next step...\n ")
-            start_date_time = validated_start_date_time
+            validated_start_date_time = entered_start_date_time.group() # thanks to Lead Craig Hudsom https://code-institute-room.slack.com/archives/C01DVU37QG4/p1701689116949349?thread_ts=1701688094.633659&cid=C01DVU37QG4 
             return validated_start_date_time
 
 def get_trade_end_dates():
@@ -153,11 +155,13 @@ def get_trade_end_dates():
     while True:
         end_date_time = input("Enter Trade Exit Date & Time (e.g., 2022-01-02 06:00:00) \n")
 
-        if (re.match(pattern, end_date_time)) is None:
+        entered_end_date_time = re.match(pattern, end_date_time)
+
+        if entered_end_date_time is None:
               print(f"{end_date_time} is an nvalid format for end date and time. Please try again.\n")
         else:
             print("\n Inputs collected. Proceeding to next step...\n")
-            end_date_time  = validated_end_date_time
+            validated_end_date_time = entered_end_date_time.group()
             return validated_end_date_time
 
 def get_trade_fee():
