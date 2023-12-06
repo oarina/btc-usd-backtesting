@@ -21,6 +21,9 @@ The BTC/USD Backtester is a simple command-line application for backtesting a hy
 - Provides clear user prompting and error handling.
 
 
+## Prica calculation
+- My calculations will use a balanced approach where I will average out the 15 minute candle between it's low and high point. 
+
 ## Data Model
 
 The app uses a Google Sheet with pricing data structured 
