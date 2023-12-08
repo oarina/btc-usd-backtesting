@@ -195,6 +195,8 @@ def get_trade_fee():
             print(f"{fee_amount} is an invalid percentage. Please try again.\n")
         else:
             print("\n Inputs collected. Proceeding to next step...\n")
+            print(fee_amount)
+            print(type(fee_amount))
             return fee_amount # this future float is still a string 
 
 def get_trade_amount():
@@ -209,6 +211,8 @@ def get_trade_amount():
             print(f"{trade_amount} is an invalid amount. Please try again.\n")
         else:
             print("\n Inputs collected. Proceeding to next step...\n")
+            print(trade_amount)
+            print(type(trade_amount))
             return trade_amount
 
 # --------------------------------------------------------------------------------------------------- CLI       
