@@ -123,7 +123,7 @@ def calculate_trade(start_low, start_high, end_low, end_high, validated_fee, val
     averaged_end = (end_low + end_high) / 2                   #2
     print(f"{averaged_end} 2. Average out the candle for end date \n")   # 29287.85 2. Average out the candle for end date 
 
-    fee_taken = validated_trade_amount * validated_fee
+    fee_taken = validated_trade_amount * validated_fee / 100
     print(f"{fee_taken} 3. Calculate the fee taken  \n") # 100.0 3. Calculate the fee taken 
 
     net_trade_amount = validated_trade_amount - fee_taken
@@ -136,6 +136,7 @@ def calculate_trade(start_low, start_high, end_low, end_high, validated_fee, val
     profit_loss = value_at_exit - net_trade_amount
     print(f"{profit_loss}  6. Calculate the prfit or loss ") # -100.0  6. Calculate the prfit or loss 
 
+    return averaged_start, averaged_end, fee_taken, net_trade_amount, btc_bought, value_at_exit, profit_loss
     
 
 # 1. Average out the candle for start date|  low + high / 2 
@@ -144,7 +145,6 @@ def calculate_trade(start_low, start_high, end_low, end_high, validated_fee, val
 # 4. Calculate the amount of BTC bought   |  After fee Trade amount / Averedeg out start date price
 # 5. Calculate the value at exit          |  Amount of BTC bought * Averaged out end date price
 # 6. Calculate the prfit or loss          |  Value at exit - after fee trade amount
-
 
 
 # --------------------------------------------------------------------------------------------------- REQUEST AND VALIDATE INPUT
@@ -240,7 +240,44 @@ def get_trade_amount():
             return validated_trade_amount
 
 # --------------------------------------------------------------------------------------------------- CLI       
-# --------------------------------------------------------------------------------------------------- CORE PATHWAYS/USER FLOW
+def display_trade_results(averaged_start, averaged_end, fee_taken, net_trade_amount, btc_bought, value_at_exit, profit_loss, validated_trade_amount, validated_fee):
+# Need to think on how I should display the message - something pretty
+# after initiate go again function =) whoohooo! and you will have a snake that eats it's own tail! =)
+    print("\n\n===============================================\n")
+    print("           Trade Outcome Summary               \n")
+    print("===============================================\n")
+    print(f"Start Price (Average): {averaged_start}")
+    print(f"End Price (Average): {averaged_end}")
+    print(f"Trade Amount: {validated_trade_amount}")
+    print(f"Fee Percentage: {validated_fee}%")
+    print(f"Fee Taken: {fee_taken}")
+    print(f"Net Trade Amount (After Fee): {net_trade_amount}")
+    print(f"BTC Bought: {btc_bought}")
+    print(f"Value at Exit: {value_at_exit}")
+    print(f"Profit or Loss: {profit_loss}")
+
+    print("\n===============================================\n")
+
+    '''
+    ===============================================
+
+           Trade Outcome Summary               
+
+===============================================
+
+Start Price (Average): 29287.85
+End Price (Average): 29070.975
+Trade Amount: 100.0
+Fee Percentage: 0.5%
+Fee Taken: 0.5
+Net Trade Amount (After Fee): 99.5
+BTC Bought: 0.0033973132203285665
+Value at Exit: 98.76320769534124
+Profit or Loss: -0.7367923046587634
+
+===============================================
+'''
+
 def display_go_again_ask_message():
     """Asks the user if they want to input another trade"""
 
@@ -281,7 +318,7 @@ def display_start_welcome_message():
     print("Please choose from one of the following options:")
 
     display_user_flow_options()
-
+# --------------------------------------------------------------------------------------------------- CORE PATHWAYS/USER FLOW
 def display_user_flow_options():
     """Provides user with options to either a trade or exit"""
 
@@ -292,7 +329,8 @@ def display_user_flow_options():
         validated_fee = get_trade_fee()
         validated_trade_amount = get_trade_amount()
         start_low, start_high, end_low, end_high = retrieve_input_price(validated_start_date_time, validated_end_date_time) # i need to declare the vars that will be out of the function so that the next function can use it
-        calculate_trade(start_low, start_high, end_low, end_high, validated_fee, validated_trade_amount)
+        averaged_start, averaged_end, fee_taken, net_trade_amount, btc_bought, value_at_exit, profit_loss = calculate_trade(start_low, start_high, end_low, end_high, validated_fee, validated_trade_amount)
+        display_trade_results(averaged_start, averaged_end, fee_taken, net_trade_amount, btc_bought, value_at_exit, profit_loss, validated_trade_amount, validated_fee) # added display function
 
     elif choice == "2":
         display_end_program_message()
