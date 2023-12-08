@@ -114,7 +114,29 @@ def retrieve_input_price(validated_start_date_time, validated_end_date_time):
 # calc fee trade_amount * fee_percentage. trade outcome - fee
 
 # --------------------------------------------------------------------------------------------------- CALCULATE THE INPUT   
-# def calculate_trade():
+def calculate_trade(start_low, start_high, end_low, end_high, validated_fee, validated_trade_amount):
+    "Function that calculates the outcome of a trade"
+
+    averaged_start = (start_low + start_high) / 2  
+    print(f"{averaged_start} 1. Average out the candle for start date \n") # 29287.85 1. Average out the candle for start date 
+
+    averaged_end = (end_low + end_high) / 2                   #2
+    print(f"{averaged_end} 2. Average out the candle for end date \n")   # 29287.85 2. Average out the candle for end date 
+
+    fee_taken = validated_trade_amount * validated_fee
+    print(f"{fee_taken} 3. Calculate the fee taken  \n") # 100.0 3. Calculate the fee taken 
+
+    net_trade_amount = validated_trade_amount - fee_taken
+    btc_bought = (validated_trade_amount - fee_taken) / averaged_start  #4
+    print(f"{btc_bought} 4. Calculate the amount of BTC bought \n") # 0.0 4. Calculate the amount of BTC bought 
+
+    value_at_exit = btc_bought * averaged_end 
+    print(f"{value_at_exit} 5. Calculate the value at exit \n") # 0.0 5. Calculate the value at exit 
+
+    profit_loss = value_at_exit - net_trade_amount
+    print(f"{profit_loss}  6. Calculate the prfit or loss ") # -100.0  6. Calculate the prfit or loss 
+
+    
 
 # 1. Average out the candle for start date|  low + high / 2 
 # 2. Average out the candle for end date  |  low + high / 2 
@@ -184,7 +206,7 @@ def get_trade_end_dates():
             return validated_end_date_time
 
 def get_trade_fee():
-    """Requesting trading fee from a user"""
+    """Requesting trading fee from a user, validates it and converts to a float"""
     
     pattern = r'^0(\.\d+)?|1(\.0+)?$' # stirng 
 
@@ -197,10 +219,11 @@ def get_trade_fee():
             print("\n Inputs collected. Proceeding to next step...\n")
             print(fee_amount)
             print(type(fee_amount))
-            return fee_amount # this future float is still a string 
+            validated_fee = float(fee_amount) # converted to float
+            return validated_fee 
 
 def get_trade_amount():
-    """Requsting a trade amount in USD in range of 100$ to 1,000,000 $ from the user"""
+    """Requsting a trade amount in USD in range of 100$ to 1,000,000 $ from the user and converts it to a float"""
     
     pattern =  pattern = r'^(?:100(?:\.0+)?|[1-9]\d{2,6}(?:\.\d+)?)$' #both accepts float and integer
 
@@ -213,7 +236,8 @@ def get_trade_amount():
             print("\n Inputs collected. Proceeding to next step...\n")
             print(trade_amount)
             print(type(trade_amount))
-            return trade_amount
+            validated_trade_amount = float(trade_amount) # added  float conversion
+            return validated_trade_amount
 
 # --------------------------------------------------------------------------------------------------- CLI       
 # --------------------------------------------------------------------------------------------------- CORE PATHWAYS/USER FLOW
@@ -265,9 +289,10 @@ def display_user_flow_options():
     if choice == "1":
         validated_start_date_time = get_trade_start_dates()
         validated_end_date_time = get_trade_end_dates()
-        fee_amount = get_trade_fee()
-        trade_amount = get_trade_amount()
-        retrieve_input_price(validated_start_date_time, validated_end_date_time)
+        validated_fee = get_trade_fee()
+        validated_trade_amount = get_trade_amount()
+        start_low, start_high, end_low, end_high = retrieve_input_price(validated_start_date_time, validated_end_date_time) # i need to declare the vars that will be out of the function so that the next function can use it
+        calculate_trade(start_low, start_high, end_low, end_high, validated_fee, validated_trade_amount)
 
     elif choice == "2":
         display_end_program_message()
