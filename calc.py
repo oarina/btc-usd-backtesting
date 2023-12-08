@@ -42,22 +42,23 @@ def calculate_trade():
     "Function that calculates the outcome of a trade"
 
     averaged_start = (start_low + start_high) / 2  
-    print(f"{averaged_start} 1. Average out the candle for start date \n")
+    print(f"{averaged_start} 1. Average out the candle for start date \n") # 29287.85 1. Average out the candle for start date 
 
     averaged_end = (end_low + end_high) / 2                   #2
-    print(f"{averaged_end} 2. Average out the candle for end date \n")
+    print(f"{averaged_end} 2. Average out the candle for end date \n")   # 29287.85 2. Average out the candle for end date 
 
     fee_taken = validated_trade_amount * validated_fee
-    print(f"{fee_taken} 3. Calculate the fee taken  \n")
+    print(f"{fee_taken} 3. Calculate the fee taken  \n") # 100.0 3. Calculate the fee taken 
 
+    net_trade_amount = validated_trade_amount - fee_taken
     btc_bought = (validated_trade_amount - fee_taken) / averaged_start  #4
-    print(f"{btc_bought} 4. Calculate the amount of BTC bought \n")
+    print(f"{btc_bought} 4. Calculate the amount of BTC bought \n") # 0.0 4. Calculate the amount of BTC bought 
 
     value_at_exit = btc_bought * averaged_end 
-    print(f"{value_at_exit} 5. Calculate the value at exit \n")
+    print(f"{value_at_exit} 5. Calculate the value at exit \n") # 0.0 5. Calculate the value at exit 
 
-    profit_loss = value_at_exit - fee_taken
-    print(f"{profit_loss}  6. Calculate the prfit or loss ")
+    profit_loss = value_at_exit - net_trade_amount
+    print(f"{profit_loss}  6. Calculate the prfit or loss ") # -100.0  6. Calculate the prfit or loss 
 
 calculate_trade()
 
