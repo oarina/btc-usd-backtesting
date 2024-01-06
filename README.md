@@ -60,11 +60,6 @@ Timestamp	Low	High
 ## ISSUE I RAN INTO
 - I used Alpaca API and alpaca-py library with a client and successfully retrieved data till 2021, but I would get empty lists after that date.  The free tier promised to give 5 + years of free historical data and I reached out to support. I have reached out to support who confired that they have data till 2021. 
 
-# I am not done - go ahead and fail me! i need to redo this. working and studying is hard and i needed to pick a less ambitious project - but I didn't know how much work it would take untill i started doing it because I am only learning on the go. 
-# Also - we need 4 session for 1 2 1 not 3. It's in now way at all enough! And need more support and waaaay longer time to do it. Calendar needs to give one month! Not a week and 121 session that is a final one needs to be a week before the deadline where I have it done! 
-# But it's just the way the cookie crumbles doesn't it! Anyhoo! we try and we try! 
-# I still dont understant how to use my IDE!!!! Helloooo!!!!
-
 
 
 
