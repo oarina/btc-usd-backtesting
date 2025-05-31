@@ -1,4 +1,5 @@
 ![BTC/USD Backtester](https://btc-usd-backtester-645f261abdd8.herokuapp.com/)
+⚠️ Note: This tool was previously hosted on Heroku, but due to recent platform changes, the live app is currently offline. All code and core logic remain functional and can be reviewed or run locally.
 
 # BTC/USD Backtester
 
