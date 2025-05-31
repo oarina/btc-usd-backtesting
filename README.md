@@ -5,6 +5,10 @@
 
 The BTC/USD Backtester is a simple command-line application for backtesting a hypothetical Bitcoin trade against historical pricing data.
 
+## 🔎 Why This Project
+
+While working in crypto support and incident operations — and actively trading myself — I noticed that most retail platforms lack built-in historical backtesting tools to guide trading decisions. Unlike institutional platforms, everyday users are left without clear ways to validate strategies or assess risk before placing trades. This tool was an attempt to bridge that gap.
+
 ## How to Use
 
 1. Run the app.
