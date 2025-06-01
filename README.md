@@ -63,7 +63,7 @@ Timestamp	Low	High
 
 
 ## ISSUE I RAN INTO
-- I used Alpaca API and alpaca-py library with a client and successfully retrieved data till 2021, but I would get empty lists after that date.  The free tier promised to give 5 + years of free historical data and I reached out to support. I have reached out to support who confired that they have data till 2021. 
+- I used Alpaca API and alpaca-py library with a client and successfully retrieved data till 2021, but I would get empty lists after that date.  The free tier promised to give 5 + years of free historical but able to retrieve data till 2021. 
 
 
 
